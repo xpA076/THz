@@ -5,8 +5,8 @@ workpath=pwd;
 
 
 % get data from file
-path1='E:\Data\171227';     % ref data path
-path2='E:\Data\171227';     % sample data path
+path1='E:\Data\171226';     % ref data path
+path2='E:\Data\171226';     % sample data path
 cd(path1);
 [name,path]=uigetfile('*.txt','air');
 path=strcat(path,name);
@@ -22,14 +22,14 @@ dat2=dat2(:,2);
 cd(workpath);
 
 % cut dat1|2 vector here
-dat1=dat1(1:600);
-dat2=dat2(1:600);
+% dat1=dat1(1:920);
+% dat2=dat2(1:920);
 
 % adding zeroes
-for i=601:20000
-    dat1(i)=0;
-    dat2(i)=0;
-end
+% for i=601:20000
+%     dat1(i)=0;
+%     dat2(i)=0;
+% end
 
 % construct frequency vector
 dat_N=length(dat1);

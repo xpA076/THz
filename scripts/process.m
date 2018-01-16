@@ -3,9 +3,10 @@
 A_f0=3*10^13;  % A_f0=1/delta_t
 workpath=pwd;
 
+
 % get data from file
-path1='E:\Data\180113';     % ref data path
-path2='E:\Data\180113';     % sample data path
+path1='E:\Data\171227';     % ref data path
+path2='E:\Data\171227';     % sample data path
 cd(path1);
 [name,path]=uigetfile('*.txt','air');
 path=strcat(path,name);
@@ -21,8 +22,8 @@ dat2=dat2(:,2);
 cd(workpath);
 
 % cut dat1|2 vector here
-dat1=dat1(1:920);
-dat2=dat2(1:920);
+dat1=dat1(1:600);
+dat2=dat2(1:600);
 
 % data interpolation ****** TO DO ******
 % dat1=interpolation(dat1,2);

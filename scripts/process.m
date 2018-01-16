@@ -5,21 +5,8 @@ workpath=pwd;
 
 
 % get data from file
-path1='E:\Data\171226';     % ref data path
-path2='E:\Data\171226';     % sample data path
-cd(path1);
-[name,path]=uigetfile('*.txt','air');
-path=strcat(path,name);
-dat1=importdata(path);
-dat1=dat1.data;
-dat1=dat1(:,2);
-cd(path2);
-[name,path]=uigetfile('*.txt','sample');
-path=strcat(path,name);
-dat2=importdata(path);
-dat2=dat2.data;
-dat2=dat2(:,2);
-cd(workpath);
+dat1=getTDSdata('air');
+dat2=getTDSdata('sample');
 
 % cut dat1|2 vector here
 % dat1=dat1(1:920);

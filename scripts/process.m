@@ -25,10 +25,11 @@ cd(workpath);
 dat1=dat1(1:600);
 dat2=dat2(1:600);
 
-% data interpolation ****** TO DO ******
-% dat1=interpolation(dat1,2);
-% dat2=interpolation(dat2,2);
-
+% adding zeroes
+for i=601:20000
+    dat1(i)=0;
+    dat2(i)=0;
+end
 
 % construct frequency vector
 dat_N=length(dat1);

@@ -10,5 +10,6 @@ dat2=Get_TDSdata('sample');
 [f1,fft1,mgnt1,phase1]=Process_TDSdata(dat1,600,30);
 [f2,fft2,mgnt2,phase2]=Process_TDSdata(dat2,600,30);
 
+T=mgnt2./mgnt1;
 
 

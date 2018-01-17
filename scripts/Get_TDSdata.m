@@ -1,4 +1,4 @@
-function dat=getTDSdata(boxname)
+function dat=Get_TDSdata(boxname)
 ori_path=pwd;
 fid=fopen(strcat(ori_path,'\cache\path.txt'));
 if fid>0

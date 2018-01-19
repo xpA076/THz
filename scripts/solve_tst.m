@@ -1,6 +1,4 @@
-function ret=iterate_solve(r)
-
-% deep iteration ****** TO DO ******
+% ****** test script ******
 syms rho fai n k delta lnMT argT w L c
 
 % error function
@@ -20,12 +18,8 @@ dd_nk=diff(d_n,k);
 w=2*pi*10^12;
 L=0.0005;
 c=3*10^8;
-lnMT=-0.31586717;
-argT=-19.675486;
-n=r(1);
-k=r(2);
-
-Hessian=[double(subs(dd_nn)) double(subs(dd_nk));...
-    double(subs(dd_nk)) double(subs(dd_kk))];
-Grad=[double(subs(d_n));double(subs(d_k))];
-ret=r-(Hessian^-1)*Grad;
+% lnMT=0.7291563;
+% argT=-19.675486;
+n=3.4;
+k=0.0951444;
+k*w*L/c+log((4*sqrt(n^2+k^2))/((n+1)^2+k^2))

@@ -15,6 +15,10 @@ dd_nn=diff(d_n,n);
 dd_kk=diff(d_k,k);
 dd_nk=diff(d_n,k);
 
+dfai_dk=diff(fai,k);
+dfai_dn=diff(fai,n);
+
+
 w=2*pi*10^12;
 L=0.0005;
 c=3*10^8;

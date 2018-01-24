@@ -181,6 +181,24 @@ hold off
 
 
 
+% --- Executes on button press in pushbutton_vislim.
+function pushbutton_vislim_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_vislim (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(handles.edit_xlim2,'Visible'),'on');
+	set(handles.edit_xlim1,'Visible','off');
+	set(handles.edit_xlim2,'Visible','off');
+	set(handles.edit_ylim1,'Visible','off');
+	set(handles.edit_ylim2,'Visible','off');
+else
+	set(handles.edit_xlim1,'Visible','on');
+	set(handles.edit_xlim2,'Visible','on');
+	set(handles.edit_ylim1,'Visible','on');
+	set(handles.edit_ylim2,'Visible','on');
+end
+
+
 % --- Executes on key press with focus on figure1 or any of its controls.
 function figure1_WindowKeyPressFcn(hObject, eventdata, handles)
 % hObject    handle to figure1 (see GCBO)
@@ -189,16 +207,4 @@ function figure1_WindowKeyPressFcn(hObject, eventdata, handles)
 %	Character: character interpretation of the key(s) that was pressed
 %	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
 % handles    structure with handles and user data (see GUIDATA)
-if eventdata.Key == 'v'
-	if strcmp(get(handles.edit_xlim2,'Visible'),'on');
-		set(handles.edit_xlim1,'Visible','off');
-		set(handles.edit_xlim2,'Visible','off');
-		set(handles.edit_ylim1,'Visible','off');
-		set(handles.edit_ylim2,'Visible','off');
-	else
-		set(handles.edit_xlim1,'Visible','on');
-		set(handles.edit_xlim2,'Visible','on');
-		set(handles.edit_ylim1,'Visible','on');
-		set(handles.edit_ylim2,'Visible','on');
-	end
-end
+a=1;

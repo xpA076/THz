@@ -124,6 +124,8 @@ pstn = get(gcf, 'CurrentPoint');
 p_axes = get(handles.axes, 'Position');
 [rx, ry] = GetRatio(pstn, p_axes);
 if handles.isMoving == 1
+	rx = max(rx, 0);
+	ry = max(ry, 0);
 	handles.hasMoved = 1;
 	handles.x(handles.selected) = ...
 		handles.xlim(1) * (1 - rx) + handles.xlim(2) * rx;
@@ -184,7 +186,8 @@ cla(handles.axes);
 function pushbutton_save_Callback(hObject, eventdata, handles)
 x = handles.x;
 y = handles.y;
-save E:\Projects\Coding\THz_TDS\scripts\Others\Spline_dat.mat x y;
+save E:\Projects\Coding\THz_TDS\data\Spline_dat.mat x y;
+msgbox('successfully saved');
 
 function [rx, ry] = GetRatio(pstn, p_axes)
 rx = (pstn(1) - p_axes(1)) / p_axes(3);

@@ -1,3 +1,5 @@
 /scripts/Others/*
 /scripts/cache/*
+/data/*
+!/data/standard_data/*
 *.asv

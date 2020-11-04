@@ -28,10 +28,10 @@ if intp > 1
     end
 end
 %% return
-dat_f=(0:length(dat)/2-1)';
-d_f=dat_f.*(f0/length(dat));            % f
+dat_f=(0:length(dat)/2-1)';            % 频率序列是: *** (0:N-1)/N*基频 ***
+d_f=dat_f.*(f0/length(dat));           % f
 fft_dat=fft(dat);
-d_fft=fft_dat(1:length(dat)/2);         % fft
+d_fft=fft_dat(1:length(dat)/2);        % fft
 mgnt=abs(d_fft);                     % magnitude
 fft_dat_intp=fft(dat_intp);
 phase_r=unwrap(angle(fft_dat_intp));

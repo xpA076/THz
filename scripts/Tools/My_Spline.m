@@ -66,6 +66,7 @@ varargout{1} = handles.output;
 
 
 %% several functions on axes_limits
+%% my definition
 function edit_xlim1_Callback(hObject, eventdata, handles)
 handles.xlim(1) = str2double(get(hObject,'String'));
 guidata(hObject, handles);
@@ -201,7 +202,7 @@ if length(handles.x) < 2
 		axis([handles.xlim(1) handles.xlim(2) handles.ylim(1) handles.ylim(2)]);
 	return;
 end
-x_intp = linspace(handles.xlim(1), handles.xlim(2), 100);
+x_intp = linspace(handles.xlim(1), handles.xlim(2), 101);
 y_intp = spline(handles.x, handles.y, x_intp);
 axes(handles.axes);
 hold off

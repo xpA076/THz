@@ -6,8 +6,8 @@ A_f0 = 3*10^13;  % A_f0=1/delta_t
 
 
 % get data from file
-dat1 = Get_TDSdata('air');
-dat2 = Get_TDSdata('sample');
+[dat1,temp] = getTDSdata('air');
+[dat2,temp] = getTDSdata('sample');
 
 dat1 = dat1(:, 2);
 dat2 = dat2(:, 2);

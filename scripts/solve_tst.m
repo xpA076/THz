@@ -1,4 +1,5 @@
 % ****** test script ******
+% ****** finished in iterate_solve.m ******
 syms rho fai n k delta lnMT argT w L c
 
 % error function

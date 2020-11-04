@@ -1,0 +1,3 @@
+patch(real(x),real(y),phi/pi/2,'EdgeColor','interp'...
+    ,'LineWidth',3,'MarkerFaceColor','flat','FaceColor','none')
+colormap('hsv')

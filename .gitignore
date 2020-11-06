@@ -1,4 +1,4 @@
-/scripts/cache/*
+/matlab_tools/cache/
 /data/*
 /*.asv
 

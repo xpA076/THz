@@ -12,7 +12,12 @@ function data = cell_data(varargin)
 
 narginchk(1,2);
 %% load
-[d,t] = comsol2data;
+try
+    [d,t] = comsol2data;
+catch
+    return
+end
+
 model = varargin{1};
 
 xidx = 1;

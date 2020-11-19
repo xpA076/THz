@@ -28,31 +28,35 @@ end
 %% 从cache中获取uigetfile路径
 % 获取数据文件路径
 if(length(datafile_path)==0)
-    ori_path = pwd;
-    script_path = mfilename('fullpath');
-    cache_path = fullfile(script_path(1:size(script_path,2)-11),...
-        'cache\matlab_uigetfile_path.txt');
-    fid = fopen(cache_path);
-    if (fid>0)
-        ui_path = fgetl(fid);
-        fclose(fid);
-        try
-            cd(ui_path);
-        catch MyError
-            cd(ori_path)
-        end
-    end
-    [name, path] = uigetfile({'*.csv','.csv for COMSOL';...
-        '*.txt','.txt for COMSOL'}, 'data');
-    cd(ori_path);
-    if(name==0)
-        fprintf('no import data\n');
+%     ori_path = pwd;
+%     script_path = mfilename('fullpath');
+%     cache_path = fullfile(script_path(1:size(script_path,2)-11),...
+%         'cache\matlab_uigetfile_path.txt');
+%     fid = fopen(cache_path);
+%     if (fid>0)
+%         ui_path = fgetl(fid);
+%         fclose(fid);
+%         try
+%             cd(ui_path);
+%         catch MyError
+%             cd(ori_path)
+%         end
+%     end
+%     [name, path] = uigetfile({'*.csv','.csv for COMSOL';...
+%         '*.txt','.txt for COMSOL'}, 'data');
+%     cd(ori_path);
+%     
+%     fid = fopen(cache_path,'w+');
+%     fprintf(fid,'%s\n',path);
+%     fclose(fid);
+%     
+    [name, path] = my_uigetfile({'*.csv','.csv for COMSOL';...
+        '*.txt','.txt for COMSOL'}, 'COMSOL table data');
+    if name == 0
+        fprintf(2, '** no import data\n');
         return
     end
     datafile_path=fullfile(path,name);
-    fid = fopen(cache_path,'w+');
-    fprintf(fid,'%s\n',path);
-    fclose(fid);
 else
     datafile_path=varargin{3};
 end

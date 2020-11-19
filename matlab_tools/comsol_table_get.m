@@ -64,7 +64,7 @@ end
 %% csv 文件处理
 if strfind(name,'.csv')
     fprintf('-- reading *.csv file...\n');
-    fprintf(['-- ' name '\n']);
+    fprintf(['--  ' name '\n']);
     data=csvread(datafile_path, 5, 0);
     [tmp1,tmp2,tmp3]=xlsread(datafile_path);
     title=tmp3(5,:);

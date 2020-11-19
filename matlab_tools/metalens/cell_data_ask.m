@@ -1,7 +1,7 @@
 function data = cell_data_ask(model)
 
 %% load
-[d,t] = comsol2data;
+[d,t] = comsol_table_get;
 data.d = d(:,2:end);
 data.xprams = d(:,1);
 data.f = data.xprams;

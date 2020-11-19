@@ -1,8 +1,8 @@
-% comsol 导出S21数据 转换成 复数矩阵 data
+% comsol 导出表格数据 转换成 复数矩阵 data
 % varargin{1}: 原始数据标题行（默认为 以 "%" 开头的最后一行）
 % varargin{2}: 原始数据列索引（向量形式）
 % varargin{3}: comsol数据文件路径
-function [data,title] = comsol2data(varargin)
+function [data,title] = comsol_table_get(varargin)
 %% 输入验证
 narginchk(0,3);
 title_row = 0;
@@ -60,6 +60,7 @@ end
 %% csv 文件处理
 if strfind(name,'.csv')
     fprintf('-- reading *.csv file...\n');
+    fprintf(['-- ' name '\n']);
     data=csvread(datafile_path, 5, 0);
     [tmp1,tmp2,tmp3]=xlsread(datafile_path);
     title=tmp3(5,:);
@@ -80,6 +81,7 @@ while ~feof(fid_data)
     cur_line=string(fgetl(fid_data));
     rawdata=[rawdata;cur_line];
 end
+fclose(fid_data);
 
 % 获取标题行 (以 "%" 开头的最后一行)
 if (title_row <= 0)

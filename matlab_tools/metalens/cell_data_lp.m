@@ -7,7 +7,7 @@ n2 = model.n2;
 
 load_const;
 %% load
-[d,t] = comsol2data;
+[d,t] = comsol_table_get;
 data.d = d(:,2:end);
 data.f = d(:,1);
 ex = d(:,2:end);

@@ -1,8 +1,8 @@
 % 导入 COMSOL 网格电场数据
-function grid_data = comsol_grid_get(varargin)
+function grid_data = comsol_get_grid(varargin)
 %% uigetfile
 [name, path] = my_uigetfile({'*.csv', 'COMSOL grid data'},...
-    'COMSOL grid data');
+    'Choose COMSOL grid data');
 if name == 0
     fprintf(2, '** no import data\n');
     return

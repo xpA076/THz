@@ -2,7 +2,7 @@
 % varargin{1}: 原始数据标题行（默认为 以 "%" 开头的最后一行）
 % varargin{2}: 原始数据列索引（向量形式）
 % varargin{3}: comsol数据文件路径
-function [data,title] = comsol_table_get(varargin)
+function [data,title] = comsol_get_table(varargin)
 %% 输入验证
 narginchk(0,3);
 title_row = 0;

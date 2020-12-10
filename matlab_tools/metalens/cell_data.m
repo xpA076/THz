@@ -13,7 +13,7 @@ function data = cell_data(varargin)
 narginchk(1,2);
 %% load
 try
-    [d,t] = comsol_table_get;
+    [d,t] = comsol_get_table;
 catch
     return
 end

@@ -22,3 +22,5 @@ set(0,'DefaultTextFontname', 'Times New Roman')
 set(0,'DefaultTextFontSize', 20)
 
 set(0,'DefaultLineLineWidth', 2)
+
+% set(0,'defaultSurfaceEdgeColor','none')

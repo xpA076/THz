@@ -1,9 +1,13 @@
 % 导入 COMSOL 网格电场数据
+% grid_data = comsol_get_grid;
+% grid_data = comsol_get_grid(name, path);
 function grid_data = comsol_get_grid(varargin)
+
 fprintf(['-- start at : ', datestr(now, 31), '\n']);
 %% uigetfile
 if nargin == 0
-    [name, path] = my_uigetfile({'*.csv', 'COMSOL grid data'},...
+    [name, path] = my_uigetfile('comsol_grid',...
+        {'*.csv', 'COMSOL grid data'},...
         'Choose COMSOL grid data');
     if name == 0
         fprintf(2, '** no import data\n');

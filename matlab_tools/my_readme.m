@@ -4,7 +4,8 @@ function myreadme(varargin)
 % varargin{2}: 创建文件名称 (默认为_readme.pptx)
 narginchk(0,2)
 cur_path = mfilename('fullpath');
-cur_path = cur_path(1:length(cur_path)-8);
+fnd = strfind(cur_path, '\');
+cur_path = cur_path(1:fnd(end));
 src_path = [cur_path '\_readme.pptx'];
 
 %% 创建文件目录

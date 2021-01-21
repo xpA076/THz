@@ -5,7 +5,9 @@ function ret = fdtd_save_emsrc(varargin)
 EM_data = varargin{1};
 %% uiputfile
 if nargin == 1
-    [name, path] = my_uiputfile({'*.mat', 'FDTD EM_src field'}, 'Save EM_src');
+    [name, path] = my_uiputfile('fdtd_em_src',...
+        {'*.mat', 'FDTD EM_src field'},...
+        'Save EM_src');
     if name == 0
         fprintf(2, '** no save data\n');
         return
@@ -39,7 +41,7 @@ for xc = 1:lenx
     end
     waitbar(yc / leny, bar, [num2str(yc) '/' num2str(leny)]);
 end
-close(bar)
+
 H(:, 1) = -(eps0/mu0)^0.5 * E(:, 2);
 H(:, 2) = (eps0/mu0)^0.5 * E(:, 1);
 
@@ -48,9 +50,11 @@ EM.H = H;
 
 
 %% save *.mat
+set(bar, 'name', 'Saving');
+waitbar(1, bar, 'Writing to .mat ...');
 EM.Lumerical_dataset = fdtd_gen_addition();
 save(fullfile(path, name), 'EM');
-
+close(bar)
 
 end
 

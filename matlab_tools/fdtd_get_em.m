@@ -1,12 +1,21 @@
+% 导入 fdtd 保存的 .mat
+% EM_data = fdtd_get_em;
+% EM_data = fdtd_get_em(name, path);
 function EM_data = fdtd_get_em(varargin)
 
-[name, path] = my_uigetfile({'*.mat', 'FDTD EM data'}, 'Choose EM data');
-if name == 0
-    fprintf(2, '** no import data\n');
-    return
+if nargin == 0
+    [name, path] = my_uigetfile('fdtd_em_ans',...
+        {'*.mat', 'FDTD EM data'},...
+        'Choose EM data');
+    if name == 0
+        fprintf(2, '** no import data\n');
+        return
+    end
+else
+    name = varargin{1};
+    path = varargin{2};
 end
 load(fullfile(path, name));
-
 x = E.x';
 y = E.y';
 z = E.z';

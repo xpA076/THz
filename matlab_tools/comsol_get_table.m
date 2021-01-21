@@ -50,8 +50,9 @@ if(length(datafile_path)==0)
 %     fprintf(fid,'%s\n',path);
 %     fclose(fid);
 %     
-    [name, path] = my_uigetfile({'*.csv','.csv for COMSOL';...
-        '*.txt','.txt for COMSOL'}, 'COMSOL table data');
+    [name, path] = my_uigetfile('comsol_table',...
+        {'*.csv','.csv for COMSOL';'*.txt','.txt for COMSOL'},...
+        'COMSOL table data');
     if name == 0
         fprintf(2, '** no import data\n');
         return

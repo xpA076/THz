@@ -63,7 +63,7 @@ bound(1:end-1, 2) = idx_data(2:end) - 1;
 bound(end, 2) = length(raw_str);
 fprintf('-- converting data ...\n')
 
-bar = waitbar(0, '');
+bar = waitbar(0, '', 'WindowStyle', 'docked');
 
 for grid_idx = 1:size(bound, 1)
     set(bar, 'Name', ...

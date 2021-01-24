@@ -63,11 +63,17 @@ bound(1:end-1, 2) = idx_data(2:end) - 1;
 bound(end, 2) = length(raw_str);
 fprintf('-- converting data ...\n')
 
-bar = waitbar(0, '', 'WindowStyle', 'docked');
+% bar = waitbar(0, '', 'WindowStyle', 'docked');
+bar = my_waitbar.bars.get_by_name('comsol_get_grid');
+set(bar, 'type', 'count', 'title', 'converting data',...
+    'total', size(bound, 1));
+bar.update(0);
+
 
 for grid_idx = 1:size(bound, 1)
-    set(bar, 'Name', ...
-        ['Converting: ' num2str(grid_idx) ' / ' num2str(size(bound, 1))]);
+    bar.update(grid_idx);
+%     set(bar, 'Name', ...
+%         ['Converting: ' num2str(grid_idx) ' / ' num2str(size(bound, 1))]);
     d_tmp = zeros(length(y), length(x));
     for str_row_idx = bound(grid_idx, 1) + 2:bound(grid_idx, 2)
         str = raw_str(str_row_idx);
@@ -84,7 +90,7 @@ for grid_idx = 1:size(bound, 1)
             d_tmp(r, c) = conj(str2num(row_split{1, c}));
         end
         percent = round(r / length(y) * 1000) / 10;
-        waitbar(percent / 100, bar, [num2str(percent) ' %']);
+%         waitbar(percent / 100, bar, [num2str(percent) ' %']);
     end
     gd.x = x;
     gd.y = y;
@@ -92,7 +98,7 @@ for grid_idx = 1:size(bound, 1)
     gd.data = d_tmp;
     grid_data = [grid_data; gd];
 end
-close(bar);
+% close(bar);
 % 
 % ex_str = [];
 % ey_str = [];

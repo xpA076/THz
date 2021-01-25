@@ -65,7 +65,7 @@ fprintf('-- converting data ...\n')
 
 % bar = waitbar(0, '', 'WindowStyle', 'docked');
 bar = my_waitbar.bars.get_by_name('comsol_get_grid');
-set(bar, 'type', 'count', 'title', 'converting data',...
+set(bar, 'type', 'count', 'title', 'Converting data ...',...
     'total', size(bound, 1));
 bar.update(0);
 

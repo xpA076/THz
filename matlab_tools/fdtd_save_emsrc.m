@@ -29,8 +29,8 @@ E = zeros(lenx * leny, 3);
 H = zeros(lenx * leny, 3);
 
 idx = 0;
-bar = waitbar(0, '');
-set(bar, 'name', 'Reshaping');
+% bar = waitbar(0, '');
+% set(bar, 'name', 'Reshaping');
 
 % x, y Ë³Ðò
 for xc = 1:lenx
@@ -39,7 +39,7 @@ for xc = 1:lenx
         E(idx, 1) = EM_data.Ex(xc, yc);
         E(idx, 2) = EM_data.Ey(xc, yc);
     end
-    waitbar(yc / leny, bar, [num2str(yc) '/' num2str(leny)]);
+%     waitbar(yc / leny, bar, [num2str(yc) '/' num2str(leny)]);
 end
 
 H(:, 1) = -(eps0/mu0)^0.5 * E(:, 2);
@@ -50,11 +50,11 @@ EM.H = H;
 
 
 %% save *.mat
-set(bar, 'name', 'Saving');
-waitbar(1, bar, 'Writing to .mat ...');
+% set(bar, 'name', 'Saving');
+% waitbar(1, bar, 'Writing to .mat ...');
 EM.Lumerical_dataset = fdtd_gen_addition();
 save(fullfile(path, name), 'EM');
-close(bar)
+% close(bar)
 
 end
 

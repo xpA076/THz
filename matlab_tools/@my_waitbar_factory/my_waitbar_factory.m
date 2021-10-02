@@ -13,6 +13,7 @@ classdef my_waitbar_factory < handle
                 bar = getfield(self.storage, name);
             else
                 bar = my_waitbar;
+                bar.set('title', name);
                 self.storage.(name) = bar;
             end
         end

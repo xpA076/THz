@@ -1,142 +1,105 @@
 % comsol 导出表格数据 转换成 复数矩阵 data
-% varargin{1}: 原始数据标题行（默认为 以 "%" 开头的最后一行）
-% varargin{2}: 原始数据列索引（向量形式）
-% varargin{3}: comsol数据文件路径
-function [data,title] = comsol_get_table(varargin)
-%% 输入验证
-narginchk(0,3);
-title_row = 0;
-idxes=[];
-if (nargin>=1)
-    if (varargin{1}>0)
-        title_row = varargin{1};
-    end
-end
-if (nargin>=2)
-    idxes=varargin{1};
-    if (length(idxes)==0)
-        idxes=[];
-    elseif (idxes(1)==0)
-        idxes=[];
-    end
-end
-datafile_path = '';
-if (nargin>=3)
-    datafile_path=varargin{3};
-end
-
-%% 从cache中获取uigetfile路径
-% 获取数据文件路径
-if(length(datafile_path)==0)
-%     ori_path = pwd;
-%     script_path = mfilename('fullpath');
-%     cache_path = fullfile(script_path(1:size(script_path,2)-11),...
-%         'cache\matlab_uigetfile_path.txt');
-%     fid = fopen(cache_path);
-%     if (fid>0)
-%         ui_path = fgetl(fid);
-%         fclose(fid);
-%         try
-%             cd(ui_path);
-%         catch MyError
-%             cd(ori_path)
-%         end
-%     end
-%     [name, path] = uigetfile({'*.csv','.csv for COMSOL';...
-%         '*.txt','.txt for COMSOL'}, 'data');
-%     cd(ori_path);
-%     
-%     fid = fopen(cache_path,'w+');
-%     fprintf(fid,'%s\n',path);
-%     fclose(fid);
-%     
+% *** 在 comsol 导出文件读取数据时 ***
+%     *** 已转为原数据复共轭 ***
+% [data, title] = comsol_get_table;
+% [data, title] = comsol_get_table(str_array);
+% [data, title] = comsol_get_table(name, path);
+function [data, titles] = comsol_get_table(varargin)
+%% argin
+if nargin == 0
+    % uigetfile
     [name, path] = my_uigetfile('comsol_table',...
         {'*.csv','.csv for COMSOL';'*.txt','.txt for COMSOL'},...
         'COMSOL table data');
     if name == 0
-        fprintf(2, '** no import data\n');
+        error( '** no import data\n');
         return
     end
-    datafile_path=fullfile(path,name);
+end
+if nargin == 2
+    name = varargin{1};
+    path = varargin{2};
+end
+if nargin == 1
+    str_array = varargin{1};
 else
-    datafile_path=varargin{3};
+    str_array = readlines(name, path);
 end
 
 %% csv 文件处理
-if strfind(name,'.csv')
-    fprintf('-- reading *.csv file...\n');
-    fprintf(['--  ' name '\n']);
-    data=csvread(datafile_path, 5, 0);
-    [tmp1,tmp2,tmp3]=xlsread(datafile_path);
-    title=tmp3(5,:);
-    for i=1:length(title)
-        fprintf(['col-', num2str(i,'%02d'), ': ']);
-        fprintf('%s\n',char(title(i)));
+titles = csv_split(str_array(5));
+
+% build data_str
+data_str = [];
+for r = 6:length(str_array)
+    str = str_array(r);
+    % check empty string
+    if strlength(str) == 0
+        continue
     end
+    % check comment
+    fd = strfind(str, '%');
+    if length(fd) > 0 && fd(1) == 1
+        continue
+    end
+    data_str = [data_str; str];
+end
+% proc_data
+data = zeros(length(data_str), length(titles));
+for r = 1:length(data_str)
+    str_split = regexp(data_str(r), ',', 'split');
+    for c = 1:length(titles)
+        data(r, c) = conj(str2num(str_split{1, c}));
+    end
+end
+
+if nargin > 0
     return
 end
-
-%% txt 文件处理
-fprintf('-- reading *.txt file...');
-
-% 获取 rawdata (以换行符分隔的字符串数组)
-fid_data=fopen(datafile_path);
-rawdata=[];
-while ~feof(fid_data)
-    cur_line=string(fgetl(fid_data));
-    rawdata=[rawdata;cur_line];
+for i = 1:length(titles)
+    fprintf(['col-', num2str(i, '%02d'), ': ']);
+    fprintf('%s\n', char(titles(i)));
 end
-fclose(fid_data);
 
-% 获取标题行 (以 "%" 开头的最后一行)
-if (title_row <= 0)
-    data_row = 0;
-    for i = 1:length(rawdata)
-        if (length(strfind(rawdata(i), '%')) == 0)
-            data_row = i;
-            break;
+end
+
+function parts = csv_split(s)
+splits = regexp(s, '"', 'split');
+parts = [];
+for i = 1:length(splits)
+    if mod(i, 2) == 0
+        % 引号内的内容为一整体
+        parts = [parts, string(splits{1, i})];
+    else
+        % 非引号内内容以逗号','分割
+        part_spl = regexp(splits{1, i}, ',', 'split');
+        for pi = 1:length(part_spl)
+            part_spl_str = string(part_spl{1, pi});
+            % 去除空白字符串
+            if strlength(part_spl_str) == 0
+                continue
+            end
+            if part_spl_str == " "
+                continue
+            end
+            % 添加合法字符串
+            parts = [parts, part_spl_str];
         end
-    end
-    title_row = data_row - 1;
+    end        
 end
 
-fprintf('-- processing data...');
+end
 
-% 处理 rawdata 成 data
-% title 字符串矩阵
-rawtitle = rawdata(title_row);
-celltitle = regexp(rawtitle,'\s\s+','split');
-cols = length(celltitle);
-rawtitle=[];
-for i=1:cols
-    rawtitle=[rawtitle string(celltitle{1,i})];
-end
-% data 数值矩阵
-numdata = zeros(size(rawdata, 1) - title_row, cols);
-for row = 1:size(numdata,1)
-    cur_celldata = regexp(rawdata(row + title_row),'\s+','split');
-    for col = 1:size(numdata,2)
-        numdata(row,col) = str2num(cur_celldata{1,col});
-    end
-end
-% data 截取 ( 根据 idxes )
-if (length(idxes)==0)
-    data=numdata;
-    title=rawtitle;
-else
-    data=[];
-    title=[];
-    for i=1:length(idxes)
-        data=[data numdata(:,idxes(i))];
-        title=[title rawtitle(idxes(i))];
-    end
-end
-% 打印 title
-for i=1:length(title)
-    fprintf(['col-', num2str(i,'%02d'), ': ']);
-    fprintf('%s\n',char(title(i)));
-end
-end
+
+
+
+
+
+
+
+
+
+
 
 
     

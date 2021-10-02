@@ -8,9 +8,9 @@ data = varargin{3};
 %% visualize
 [X, Y] = meshgrid(vecx, vecy);
 if nargin < 5
-    surf(X, Y, data, 'linestyle', 'none');
+    ret = surf(X, Y, data, 'linestyle', 'none');
 else
-    surf(X, Y, data);
+    ret = surf(X, Y, data);
 end
 colorbar;
 colormap jet;

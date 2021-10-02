@@ -7,15 +7,15 @@ classdef my_waitbar < matlab.mixin.SetGet
     properties
         % title
         title
+
         % type: 'percent', 'count', 'float'
         type
-%         % current
-%         current
+
         % total
         total
         
-        % waitbar figure
-        bar
+        % waitbar figure handle
+        hbar
     end
     
     methods
@@ -39,8 +39,8 @@ classdef my_waitbar < matlab.mixin.SetGet
         
         function ret = update(self, current)
             if ~self.is_shown()
-                self.bar = waitbar(0, '', 'WindowStyle', 'docked');
-                set(self.bar, 'Name', self.title);
+                self.hbar = waitbar(0, '', 'WindowStyle', 'docked');
+                set(self.hbar, 'Name', self.title);
             end
             progress = current / self.total;
             if strcmp(self.type, 'percent')
@@ -51,14 +51,19 @@ classdef my_waitbar < matlab.mixin.SetGet
             elseif strcmp(self.type, 'float')
                 info = num2str(progress);
             end
-            waitbar(progress, self.bar, info);
+            waitbar(progress, self.hbar, info);
+        end
+        
+        function ret = set_count_total(self, num)
+            self.type = 'count';
+            self.total = num;
         end
         
         function obj = set.title(obj, val)
             obj.title = val;
             try
                 if self.is_shown()
-                    set(self.bar, 'Name', val);
+                    set(self.hbar, 'Name', val);
                 end
             catch exception
             end
@@ -71,9 +76,9 @@ classdef my_waitbar < matlab.mixin.SetGet
         end
         
         function flag = is_shown(self)
-            if strcmp(class(self.bar), 'matlab.ui.Figure')
+            if strcmp(class(self.hbar), 'matlab.ui.Figure')
                 try
-                    etc = get(self.bar, 'Name');
+                    etc = get(self.hbar, 'Name');
                     flag = (1==1);
                 catch exception
                     flag = (0==1);

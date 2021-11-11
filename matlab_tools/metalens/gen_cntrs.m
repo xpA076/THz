@@ -1,7 +1,7 @@
 % 生成中心坐标网格
 function [X, Y] = gen_cntrs(p, count)
 countx = count(1);
-if length(count > 1)
+if length(count) > 1
     county = count(2);
 else
     county = countx;

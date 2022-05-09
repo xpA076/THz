@@ -29,7 +29,7 @@ str = [...
     '041h,051h,061h,011h,063q,071q,071w',...
     ];
 
-str = ['=31w~=41w~=71w'];
+% str = ['=31w~=41w~=71w'];
 s = build_sound(str, info);
 % plot(s)
 sound(s/2, info.fs);

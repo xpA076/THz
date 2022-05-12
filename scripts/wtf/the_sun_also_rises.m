@@ -1,4 +1,3 @@
-function ret = the_sun_also_rises()
 info.fs = 44100;
 info.f0 = 420;
 info.beats_pm = 200;
@@ -10,7 +9,6 @@ str = ['-61w,031w,031w,033q,041q|035h,031h,041h,051h|',...
     '033q,021q,031w,051w,-73q,011q|-61f'];
 s = build_sound(str, info);
 sound(s, info.fs);
-end
 
 function s = build_sound(str, info)
 spl = strsplit(str, {',', '|', '~'});

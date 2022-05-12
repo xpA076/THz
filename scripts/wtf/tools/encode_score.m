@@ -1,58 +1,49 @@
-function y = build_sound(s, bpm, pianod)
-%% parameters
-fs = 44100;
-dt = 1 / fs;
-y = [];
-dtb = 60 / bpm;
+sc = [
+    'G-1h,d-1h,b-1h,d-1h,b-1h,d-1h,b-1h,d-1h.',...45
+    'd-1h,g-1h,e1-1h,g-1h,e1-1h,g-1h,e1-1h,g-1h.',...46
+    'A-1h,e-1h,c1-1h,e-1h,c1-1h,e-1h,c1-1h,e-1h.',...47
+    'c-1h,g-1h,c1-1h,g-1h,D-1h,d-1h,a-1h,d-1h.',...48
+    'G-1h,d-1h,b-1h,d-1h,b-1h,d-1h,b-1h,d-1h.',...49
+    'd-1h,g-1h,e1-1h,g-1h,e1-1h,g-1h,e1-1h,g-1h.',...50
+    'A-1h,e-1h,c1-1h,e-1h,c1-1h,e-1h,c1-1h,e-1h.',...51
+    'c-1h,g-1h,c1-1h,d-9h.',...52
+    ];
+spl_score = strsplit(sc, {',', '.'});
 
-%% data
-spl_score = strsplit(s, {',', '.'});
-pt = 0;
-
-%% build y
-sound_mix_ratio = [0.8, 0.5, 0.4];
 for inote = 1:length(spl_score) - 1
-    N_pt = round(pt / dt);
     note1 = spl_score{inote};
     spl_note = split(note1, '&');
     % build single note (with multiple freqs)
     lspn = length(spl_note);
     for i = 1:lspn
         snote = spl_note(i);
-        [fr, dr] = parse_single_note(snote);
-        relx = calc_relaxation_factor(dr);
-        % build single freq
-        if fr > 0
-            yn = generate_piano_note(fr, pianod, relx);
-            lyn = length(yn);
-            reqlen = N_pt + lyn - length(y);
-            % extend y
-            if reqlen > 0
-                y = [y; zeros(reqlen, 1)];
-            end
-            y(N_pt + 1:N_pt + lyn) = y(N_pt + 1:N_pt + lyn) + ...
-                sound_mix_ratio(lspn) * yn;
+        bn = parse_single_note(snote);
+        % is continue or not
+        if i < lspn
+            bn = bn + 1;
         end
+        bn1 = floor(bn / 2^12);
+        bn2 = floor((bn - bn1 * 2^12) / 2^6);
+        bn3 = mod(bn, 2^6);
+        s_enc = [b64encode(bn1), b64encode(bn2), b64encode(bn3)];
+        fprintf(s_enc);
     end
-    pt = pt + dr * dtb;
 end
-
-end
-
-function relx = calc_relaxation_factor(duration)
-relx = 0.5 * (duration - 1) + 1;
-end
-
-function [freq, duration] = parse_single_note(snote)
+fprintf('\n');
+% 18 bit (3 characters)
+function bin_num = parse_single_note(snote)
 spl = split(snote, '-');
-freq = parse_freq(spl{1});
-duration = parse_duration(spl{2});
+freqi = parse_freq(spl{1});
+[dm, typ] = parse_duration(spl{2});
+bn = freqi * (2^5) + dm;
+bn = bn * (2^6) + typ * 4;
+bin_num = bn;
 end
 
-function freq = parse_freq(frs)
+function freqi = parse_freq(frs)
 %% blank note
 if length(strfind(frs, 'N0')) > 0
-    freq = 0;
+    freqi = 0;
     return
 end
 
@@ -94,12 +85,12 @@ end
 fb = [0, 2, 4, 5, 7, 9, 11];
 i = strfind('cdefgab', lower(frs(1)));
 exp_bias = exp_bias + fb(i) + exp_add;
-freq = 440 * 2^(exp_bias / 12);
+freqi = exp_bias + 37;
 end
 
-function duration = parse_duration(drs)
-m = str2num(drs(1:end - 1));
+function [dm, typ] = parse_duration(drs)
+dm = str2num(drs(1:end - 1));
 db = [0.25, 0.5, 1, 2];
 i = strfind('qhnd', drs(end));
-duration = m * db(i);
+typ = i - 1;
 end
